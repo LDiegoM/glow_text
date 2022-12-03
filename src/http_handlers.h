@@ -34,7 +34,7 @@ class HttpHandlers {
 
         const char* ERR_MESSAGE_IS_EMPTY = "Message parameters can't be empty";
         const char* ERR_ANIMATION_IS_EMPTY = "Animation parameters can't be empty";
-
+        const char* ERR_GENERIC = "Error saving parameters. Please try again";
 
         WiFiConnection *m_wifi;
         Storage *m_storage;

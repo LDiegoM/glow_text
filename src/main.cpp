@@ -8,6 +8,7 @@
 #include <wifi_connection.h>
 #include <http_handlers.h>
 
+// Define Parola display settings
 #define HARDWARE_TYPE MD_MAX72XX::FC16_HW
 #define MAX_DEVICES 4
 #define CS_PIN 5
@@ -15,17 +16,19 @@
 Storage *storage;
 WiFiConnection *wifi;
 MD_Parola *parola;
-Display *display;
+Display *display = nullptr;
 
 void setup(void) {
     parola = new MD_Parola(HARDWARE_TYPE, CS_PIN, MAX_DEVICES);
     parola->begin();
 
-    display = new Display(parola);
-
     storage = new Storage();
-    if (!storage->begin()) {
-        display->setMessage("storage err");
+    if (!storage->begin())
+        return;
+
+    display = new Display(parola, storage);
+    if (!display->begin()) {
+        display->setMessage("display err");
         return;
     }
 
@@ -43,6 +46,9 @@ void setup(void) {
 }
 
 void loop(void) {
-    display->loop();
-    httpHandlers->loop();
+    if (display != nullptr)
+        display->loop();
+    
+    if (httpHandlers != nullptr)
+        httpHandlers->loop();
 }
