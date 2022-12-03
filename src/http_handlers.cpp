@@ -113,6 +113,10 @@ void HttpHandlers::handleSetMessage() {
     }
 
     m_display->setMessage(newMessage);
+    if (!m_display->saveData()) {
+        m_server->send(500, "text/plain", ERR_GENERIC);
+        return;
+    }
 
     m_server->send(200, "text/plain", MSG_OK);
 }
@@ -128,6 +132,10 @@ void HttpHandlers::handleSetAnimation() {
 
     m_display->setSpeed(newValues.speed);
     m_display->setPause(newValues.pause);
+    if (!m_display->saveData()) {
+        m_server->send(500, "text/plain", ERR_GENERIC);
+        return;
+    }
 
     m_server->send(200, "text/plain", MSG_OK);
 }
